@@ -43,7 +43,7 @@ export function usePoll<T>(url: string | null, intervalMs: number): { data: T | 
 
 export type StatusResponse = {
   chainId: number;
-  contracts: { jobs: string; panel: string; deployed: { jobs: boolean; panel: boolean } };
+  contracts: { jobs: string; panel: string; deployed: { jobs: boolean; panel: boolean }; verified: Record<string, string> };
   erc8004: { identity: string; reputation: string; validation: string; agentId: string | null; agentCard: string | null };
   seed: "ok" | "missing" | "invalid";
   wallets: Partial<Record<"ops" | "engine" | "demoA" | "demoB", { address: string; usdc: string }>>;

@@ -22,7 +22,7 @@ export async function GET() {
   });
   return json({
     chainId: chain.id,
-    contracts: { ...CONTRACTS, deployed: setupState.deployed },
+    contracts: { ...CONTRACTS, deployed: setupState.deployed, verified: setupState.verified },
     erc8004: { ...ERC8004, agentId: setupState.agentId, agentCard: agentCardUrl() },
     seed: setupState.seed,
     wallets: balances,

@@ -28,7 +28,7 @@ export const RPC_URL =
   process.env.NEXT_PUBLIC_ARC_RPC_URL ||
   (TESTNET ? "https://rpc.testnet.arc.network" : "https://rpc.mainnet.arc.io");
 
-export const EXPLORER = TESTNET ? "https://testnet.arcscan.app" : "https://explorer.arc.io";
+export const EXPLORER = TESTNET ? "https://explorer.testnet.arc.io" : "https://explorer.arc.io";
 
 /** USDC sits at the same address, with the same permit domain, on both networks. */
 export const USDC = {

@@ -3,6 +3,7 @@ import { CONTRACTS, ERC8004, USDC } from "../arc";
 import { publicClient } from "../jobs";
 import initcode from "./initcode.json" with { type: "json" };
 import { send, write } from "./tx";
+import { ensureVerified, type VerifyState } from "./verify";
 import { account, seedStatus, type WalletName } from "./wallets";
 
 /**
@@ -45,6 +46,8 @@ const DEMO_WORKER = { min: milli(10n), target: milli(20n) };
 export type SetupState = {
   seed: "ok" | "missing" | "invalid";
   deployed: { jobs: boolean; panel: boolean };
+  /** Source verification on the explorer, per contract. */
+  verified: VerifyState;
   agentId: string | null;
   lastError: string | null;
   lastRun: number | null;
@@ -55,6 +58,7 @@ const g = globalThis as unknown as { __accrueSetup?: SetupState };
 export const setupState: SetupState = (g.__accrueSetup ??= {
   seed: seedStatus(),
   deployed: { jobs: false, panel: false },
+  verified: {},
   agentId: process.env.ACCRUE_ENGINE_AGENT_ID ?? null,
   lastError: null,
   lastRun: null,
@@ -185,6 +189,8 @@ async function ensureAgent(): Promise<void> {
 }
 
 /** One setup pass. Stops at the first step that cannot proceed yet. */
+let lastVerify = 0;
+
 export async function runSetup(): Promise<void> {
   setupState.seed = seedStatus();
   setupState.lastRun = Math.floor(Date.now() / 1000);
@@ -198,6 +204,10 @@ export async function runSetup(): Promise<void> {
     }
     await ensureTopUps();
     await ensureAgent();
+    if (Date.now() - lastVerify > 60_000) {
+      lastVerify = Date.now();
+      await ensureVerified(setupState.verified);
+    }
     setupState.lastError = null;
   } catch (error) {
     setupState.lastError = error instanceof Error ? error.message.slice(0, 300) : String(error);

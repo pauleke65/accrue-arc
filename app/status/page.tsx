@@ -49,6 +49,10 @@ export default function StatusPage() {
           <div className="space-y-2.5">
             <Ok ok={data.contracts.deployed.jobs}>AccrueJobs deployed</Ok>
             <Ok ok={data.contracts.deployed.panel}>AccruePanel deployed</Ok>
+            <Ok ok={data.contracts.verified.AccrueJobs === "verified" && data.contracts.verified.AccruePanel === "verified"}>
+              Source verified on the explorer
+              {data.contracts.verified.AccrueJobs && data.contracts.verified.AccrueJobs !== "verified" ? ` (${data.contracts.verified.AccrueJobs})` : ""}
+            </Ok>
             <Ok ok={!!data.erc8004.agentId}>Proof Engine registered on ERC-8004{data.erc8004.agentId ? ` as agent #${data.erc8004.agentId}` : ""}</Ok>
             <Ok ok={data.ai.configured}>{data.ai.configured ? `Model judgement on (${data.ai.model})` : "Model judgement off: the engine decides on facts alone"}</Ok>
             <Ok ok={data.demo.ok}>Live demo {data.demo.ok ? "ready" : `unavailable${data.demo.reason ? `: ${data.demo.reason}` : ""}`}</Ok>
