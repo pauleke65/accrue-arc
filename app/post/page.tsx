@@ -6,7 +6,7 @@ import { decodeEventLog, getAddress, isAddress, type Address } from "viem";
 import { useWallet } from "@/app/wallet";
 import { ConnectPanel } from "@/components/shell";
 import { Button, Field, Notice, Section, Usdc } from "@/components/ui";
-import { CONTRACTS } from "@/lib/arc";
+import { CONTRACTS, NETWORK_NAME } from "@/lib/arc";
 import { jobsAbi } from "@/lib/abi";
 import { useStatus } from "@/lib/client";
 import { readableError } from "@/lib/errors";
@@ -46,6 +46,9 @@ const PRESETS: { key: Preset; title: string; body: string; icon: typeof Bot; win
     window: 72 * 3600,
   },
 ];
+
+/** Enough for one post plus its up-front gas allowance at Arc's fee floor. */
+const FEE_HEADROOM = 40_000n; // 0.04 USDC
 
 export default function PostPage() {
   const wallet = useWallet();
@@ -154,6 +157,17 @@ export default function PostPage() {
       setBusy(false);
     }
   };
+
+  // Checked before signing, so nobody meets a raw contract error.
+  const deployed = status ? status.contracts.deployed.jobs && status.contracts.deployed.panel : true;
+  const needs = (hire === "named" ? (draft.amount ?? 0n) : 0n) + FEE_HEADROOM;
+  const blocker = !deployed
+    ? `Accrue's contracts aren't on ${NETWORK_NAME} yet. They deploy as soon as the operations wallet is funded; the Status page shows progress.`
+    : wallet.balance !== null && wallet.balance < needs
+      ? hire === "named"
+        ? `You need ${formatUsdc(needs)} USDC on ${NETWORK_NAME}: the budget plus about a cent for the network fee.`
+        : `You need a little USDC on ${NETWORK_NAME} to pay the network fee (about a cent). Send some to your address from the account menu.`
+      : null;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -282,11 +296,12 @@ export default function PostPage() {
               </div>
             )}
             {draft.problem && <Notice tone="wait">{draft.problem}</Notice>}
-            <Button size="lg" className="w-full" busy={busy} disabled={!!draft.problem} onClick={post}>
+            {!draft.problem && blocker && <Notice tone="wait">{blocker}</Notice>}
+            <Button size="lg" className="w-full" busy={busy} disabled={!!draft.problem || !!blocker} onClick={post}>
               {hire === "named" ? "Post and lock the budget" : "Post the job"}
             </Button>
             <p className="text-xs text-faint">
-              {hire === "named" ? "One signature approves the USDC and one transaction posts and funds the job." : "Posting only records the job; no USDC moves until you assign a worker."} The network fee is a fraction of a cent, paid in USDC.
+              {hire === "named" ? "One signature approves the USDC and one transaction posts and funds the job." : "Posting only records the job; no USDC moves until you assign a worker."} The network fee is about a cent, paid in USDC.
             </p>
             {error && <p className="text-sm text-refund">{error}</p>}
           </div>

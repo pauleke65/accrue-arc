@@ -1,4 +1,4 @@
-import { BaseError, ContractFunctionRevertedError, UserRejectedRequestError } from "viem";
+import { BaseError, ContractFunctionRevertedError, ContractFunctionZeroDataError, UserRejectedRequestError } from "viem";
 
 /** What each contract error means to the person who hit it. */
 const MESSAGES: Record<string, string> = {
@@ -40,7 +40,9 @@ export function readableError(error: unknown): string {
     const reverted = error.walk((e) => e instanceof ContractFunctionRevertedError) as ContractFunctionRevertedError | null;
     const name = reverted?.data?.errorName;
     if (name && MESSAGES[name]) return MESSAGES[name];
-    if (/insufficient funds/i.test(error.message)) return "Not enough USDC for this and its network fee.";
+    if (error.walk((e) => e instanceof ContractFunctionZeroDataError))
+      return "Accrue's contracts aren't deployed on this network yet. Check the Status page.";
+    if (/insufficient funds|exceeds the balance/i.test(error.message)) return "Not enough USDC on Arc for this and its network fee.";
     return error.shortMessage || error.message;
   }
   if (error instanceof Error) return error.message;
