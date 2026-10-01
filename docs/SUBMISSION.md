@@ -34,7 +34,7 @@ https://explorer.arc.io/address/0xD40e540f1e89994B2973ffAc971C2C20BcDC87c5
 https://github.com/pauleke65/accrue-arc
 
 **8. In two sentences, what does your project do?**
-Accrue is an outcome marketplace: anyone, human or agent, posts an objective with a USDC budget that stays locked until the work is verified, then pays out in under a second. A panel of Accrue's Proof Engine agent and people the client names decides. The engine checks the facts (a live page, a merged pull request, an API response) and votes on chain with its report. If the panel stays silent, the worker is still paid.
+Accrue is an outcome marketplace on Arc: anyone, human or agent, posts an objective with a USDC budget that stays locked in an ERC-8183 escrow until the work is verified, then the worker is paid in under a second. A panel decides, made of Accrue's Proof Engine (an ERC-8004 agent that checks live pages, merged pull requests and API responses and publishes its report on chain) and any people the client names, and if the panel stays silent past its window the worker is still paid.
 
 **9. What does it use Arc for?**
 Arc is the whole stack:
@@ -53,9 +53,11 @@ No
 No
 
 **12. Anything else we should see?**
-Press "Run a live job" on the home page. It runs a real 0.10 USDC job on mainnet: post and lock with one permit, deliver, the Proof Engine checks, the contract pays. Each step shows its transaction, time to finality and fee.
+Press "Run a live job" on the home page. It runs a real 0.10 USDC job on mainnet: post and lock with one permit, deliver, the Proof Engine checks, the contract pays. Each step shows its transaction, time to finality and fee. A two-minute walkthrough video, recorded on Arc testnet, is linked in the README.
 
-The contracts are ownerless with no admin keys and are covered by 61 Foundry tests, including fuzzing and invariants. The site keeps no database: briefs, evidence, votes and reports all live on Arc. Agents can use the contracts directly (see /agents).
+The contracts are ownerless with no admin keys, verified on the explorer, and covered by 61 Foundry tests including fuzzing and invariants. The site keeps no database: briefs, evidence, votes and reports all live on Arc. Agents can use the contracts directly (see /agents). The whole deployment runs on under 1 USDC; the README lists the measured gas.
+
+Next: Onramp Kit so clients fund jobs by card, Circle Agent Stack wallets as workers with spend limits, and ERC-8004 reputation written for every completed job.
 
 Accrue began at Monad Metropolis; this is a ground-up rebuild around Arc's standards and USDC-native money.
 
@@ -66,6 +68,6 @@ Accrue began at Monad Metropolis; this is a ground-up rebuild around Arc's stand
 | Criterion | What a reviewer can check in two minutes |
 |---|---|
 | **Relevance to Arc** | It answers Arc's "outcome marketplaces" Request for Builders word for word. It implements ERC-8183, uses ERC-8004 and native USDC for gas and settlement, and is built around sub-second finality, Arc's USDC permit and its CREATE2 factory. |
-| **Technical credibility** | Ownerless, non-upgradeable contracts. 61 Foundry tests with invariants. Spec-faithful ERC-8183 (the `expectedBudget` guard, an unhookable `claimRefund`). SSRF-hardened evidence fetching. Arc specifics handled: the 20 gwei floor, 6- versus 18-decimal USDC, and the 10k-block log limit avoided by design. |
+| **Technical credibility** | Ownerless, non-upgradeable contracts, source verified on the explorer. 61 Foundry tests with invariants. Spec-faithful ERC-8183 (the `expectedBudget` guard, an unhookable `claimRefund`). SSRF-hardened evidence fetching. Arc specifics handled: the 20 gwei floor, 6- versus 18-decimal USDC, and the 10k-block log limit avoided by design. |
 | **Quality of what was built** | A live mainnet demo with real transactions and timings, passkey sign-in, a definition-of-done builder, readable job pages with reports, a status page with full transparency, and a responsive layout. |
-| **Worth taking further** | The roadmap: App Kit funding from any chain, reviewer fees, ERC-8004 reputation for agent workers, milestone jobs, and a West Africa remote-work corridor. Already used in a hackathon setting, and positioned for the Circle Grant Program. |
+| **Worth taking further** | The roadmap follows Arc's launch: Onramp Kit and CCTP funding, Circle Agent Stack wallets as workers, reviewer fees, ERC-8004 reputation for agent workers, milestone jobs, and a West Africa remote-work corridor. Already used in a hackathon setting, and positioned for the Circle Grant Program. |

@@ -127,6 +127,9 @@ Prototype contracts, **not independently audited**: keep amounts small. The live
 
 ## What's next
 
-Circle's App Kit for funding from any chain via CCTP. Reviewer fees and a reviewer pool, both from the Monad version. ERC-8004 reputation written for agent workers on every completed job. Milestone jobs built from chained ERC-8183 jobs. A Nigeria/West Africa remote-work corridor with local on- and off-ramps.
+- **Funding from anywhere:** Arc's Onramp Kit so a client can fund a job by card, and CCTP so USDC arrives from any chain.
+- **Agents as workers:** Circle Agent Stack wallets with spend limits can take jobs, and the Proof Engine writes ERC-8004 reputation for every completed one.
+- **Bigger work:** reviewer fees and a reviewer pool (both from the Monad version), and milestone jobs built from chained ERC-8183 jobs.
+- **A first corridor:** Nigeria and West Africa remote work, with local on- and off-ramps.
 
 MIT licensed.
