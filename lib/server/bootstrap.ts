@@ -24,12 +24,23 @@ export const identityAbi = parseAbi([
 
 const USDC_UNIT = 10n ** BigInt(USDC.decimals);
 
-/** Keep each wallet at least at `min`; refill it to `target`. In USDC base units. */
-const TOP_UPS: Partial<Record<WalletName, { min: bigint; target: bigint }>> = {
-  engine: { min: USDC_UNIT / 4n, target: USDC_UNIT }, // votes cost ~$0.003-0.01 each
-  demoA: { min: USDC_UNIT, target: 2n * USDC_UNIT }, // a demo job is 0.10 USDC plus fees
-  demoB: { min: USDC_UNIT, target: 2n * USDC_UNIT },
-};
+/*
+ * Funding is kept lean so the whole setup runs on well under 1 USDC. Measured
+ * on Arc at its 20 gwei floor: deploying both contracts costs ~0.084 USDC, the
+ * ERC-8004 registration ~0.005, a vote ~0.004, and a demo run ~0.02 in fees
+ * (its 0.10 budget only moves between the two demo wallets). A sender must
+ * also hold gas limit × max fee up front, so balances keep that headroom.
+ */
+const milli = (n: bigint) => (n * USDC_UNIT) / 1000n;
+/** The live demo's job budget: 0.10 USDC. */
+export const DEMO_BUDGET = milli(100n);
+/** Never spend ops below this: it pays the next top-up and first-fee stipends. */
+export const OPS_RESERVE = milli(20n);
+/** The Proof Engine refills from 0.015 to 0.05 USDC (registration plus ~10 votes). */
+const ENGINE = { min: milli(15n), target: milli(50n) };
+/** One demo wallet must cover the budget plus the post's up-front gas; the other only a submit. */
+const DEMO_CLIENT = { min: DEMO_BUDGET + milli(40n), target: DEMO_BUDGET + milli(60n) };
+const DEMO_WORKER = { min: milli(10n), target: milli(20n) };
 
 export type SetupState = {
   seed: "ok" | "missing" | "invalid";
@@ -81,23 +92,27 @@ async function ensureDeployed(): Promise<void> {
   }
 }
 
+async function topUp(name: WalletName, rule: { min: bigint; target: bigint }, balance: bigint): Promise<void> {
+  if (balance >= rule.min) return;
+  const amount = rule.target - balance;
+  if ((await usdcBalance(account("ops").address)) < amount + OPS_RESERVE) return;
+  const sent = await write("ops", {
+    address: USDC.address,
+    abi: erc20Abi,
+    functionName: "transfer",
+    args: [account(name).address, amount],
+  });
+  note(`Topped up ${name} with ${Number(amount) / 1e6} USDC`, sent.hash);
+}
+
 async function ensureTopUps(): Promise<void> {
-  const ops = account("ops").address;
-  for (const [name, rule] of Object.entries(TOP_UPS) as [WalletName, { min: bigint; target: bigint }][]) {
-    const address = account(name).address;
-    const balance = await usdcBalance(address);
-    if (balance >= rule.min) continue;
-    const amount = rule.target - balance;
-    // Leave ops enough to keep paying fees and first-fee stipends.
-    if ((await usdcBalance(ops)) < amount + USDC_UNIT / 2n) continue;
-    const sent = await write("ops", {
-      address: USDC.address,
-      abi: erc20Abi,
-      functionName: "transfer",
-      args: [address, amount],
-    });
-    note(`Topped up ${name} with ${Number(amount) / 1e6} USDC`, sent.hash);
-  }
+  await topUp("engine", ENGINE, await usdcBalance(account("engine").address));
+  // The demo budget moves between the two wallets, so fund the pair, not each.
+  const [a, b] = await Promise.all([usdcBalance(account("demoA").address), usdcBalance(account("demoB").address)]);
+  const [rich, richBalance, poor, poorBalance]: [WalletName, bigint, WalletName, bigint] =
+    a >= b ? ["demoA", a, "demoB", b] : ["demoB", b, "demoA", a];
+  await topUp(rich, DEMO_CLIENT, richBalance);
+  await topUp(poor, DEMO_WORKER, poorBalance);
 }
 
 export function agentCardUrl(): string | null {

@@ -77,6 +77,20 @@ The Railway service derives its wallets (operations, Proof Engine, two demo acco
 
 [/status](https://accrue-arc.up.railway.app/status) shows every wallet, balance and setup transaction.
 
+### What it costs to run
+
+Measured gas, priced at Arc's 20 gwei base fee plus a 1 gwei tip:
+
+| Step | Gas | USDC |
+|---|---|---|
+| Deploy AccrueJobs + AccruePanel | 3,998,591 | ~0.084 |
+| Register the Proof Engine on ERC-8004 | ~200,000 | ~0.005 |
+| Live demo: post and lock with a permit | 647,572 | ~0.014 |
+| Live demo: submit the delivery | 100,676 | ~0.002 |
+| Live demo: Proof Engine vote and payout | 171,183 | ~0.004 |
+
+The whole setup starts from **0.35 USDC** sent to the operations wallet: deployment, funding the Proof Engine (0.05) and the demo pair (0.18, of which 0.10 is the demo budget that moves back and forth), plus a 0.02 reserve. Every live demo after that costs about 0.02 USDC in fees, so 1 USDC covers roughly 30 runs. The top-ups refill from the operations wallet automatically, and the demo pauses politely when it runs dry.
+
 ## Quality
 
 - **61 Foundry tests:** kernel conformance to ERC-8183, panel scenarios (quorums, early rejection, silence, deadlines, cancellation, applications), permit front-running, hook reentrancy and gas caps, blocklisted-recipient recovery, fuzzing, and three invariants over 8,192 random actions each. The invariants are: escrow equals the open budgets, money is conserved, and final states stay final.

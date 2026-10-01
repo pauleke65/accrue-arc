@@ -14,11 +14,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ variant = "primary", busy, size = "md", className = "", children, disabled, ...rest }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-[10px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed select-none";
+    "inline-flex items-center justify-center gap-2 rounded-[6px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed select-none";
   const sizes = { sm: "h-8 px-3 text-sm", md: "h-10 px-4 text-[0.95rem]", lg: "h-12 px-6 text-base" };
   const variants = {
-    primary: "bg-accent text-white hover:bg-accent-bright",
-    secondary: "bg-raised text-ink border border-line-strong hover:border-accent/60",
+    primary: "bg-black text-white hover:bg-ink",
+    secondary: "bg-white/70 text-ink border border-ink/80 hover:bg-white",
     ghost: "text-dim hover:text-ink hover:bg-raised",
     danger: "bg-refund-soft text-refund border border-refund/30 hover:bg-refund/20",
   };
@@ -33,12 +33,12 @@ export function Button({ variant = "primary", busy, size = "md", className = "",
 export function ButtonLink({ href, children, variant = "primary", size = "md", className = "" }: { href: string; children: ReactNode; variant?: "primary" | "secondary" | "ghost"; size?: "md" | "lg"; className?: string }) {
   const sizes = { md: "h-10 px-4 text-[0.95rem]", lg: "h-12 px-6 text-base" };
   const variants = {
-    primary: "bg-accent text-white hover:bg-accent-bright",
-    secondary: "bg-raised text-ink border border-line-strong hover:border-accent/60",
+    primary: "bg-black text-white hover:bg-ink",
+    secondary: "bg-white/70 text-ink border border-ink/80 hover:bg-white",
     ghost: "text-dim hover:text-ink hover:bg-raised",
   };
   return (
-    <Link href={href} className={`inline-flex items-center justify-center gap-2 rounded-[10px] font-medium transition-colors ${sizes[size]} ${variants[variant]} ${className}`}>
+    <Link href={href} className={`inline-flex items-center justify-center gap-2 rounded-[6px] font-medium transition-colors ${sizes[size]} ${variants[variant]} ${className}`}>
       {children}
     </Link>
   );
@@ -61,7 +61,7 @@ const PHASE_TONE: Record<Phase, "accent" | "wait" | "paid" | "refund" | "muted">
 };
 
 const TONES = {
-  accent: "bg-accent-soft text-accent-bright border-accent/25",
+  accent: "bg-accent-soft text-accent border-accent/25",
   wait: "bg-wait-soft text-wait border-wait/25",
   paid: "bg-paid-soft text-paid border-paid/25",
   refund: "bg-refund-soft text-refund border-refund/25",
@@ -141,11 +141,11 @@ export function TxLink({ hash, children }: { hash: string; children?: ReactNode 
 
 export function Section({ eyebrow, title, children, action }: { eyebrow?: string; title: string; children: ReactNode; action?: ReactNode }) {
   return (
-    <section className="card p-5 sm:p-6">
+    <section className="card p-5 sm:p-7">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           {eyebrow && <div className="eyebrow mb-1">{eyebrow}</div>}
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 className="text-2xl">{title}</h2>
         </div>
         {action}
       </div>
@@ -156,16 +156,16 @@ export function Section({ eyebrow, title, children, action }: { eyebrow?: string
 
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
   return (
-    <div className="card px-4 py-3.5">
+    <div className="ticks px-5 py-4">
       <div className="eyebrow">{label}</div>
-      <div className="mt-1 text-xl font-semibold">{value}</div>
+      <div className="mt-2 font-[family-name:var(--font-display)] text-3xl font-light tracking-tight">{value}</div>
       {hint && <div className="mt-0.5 text-xs text-faint">{hint}</div>}
     </div>
   );
 }
 
 export function Notice({ tone = "accent", children }: { tone?: "accent" | "wait" | "paid" | "refund"; children: ReactNode }) {
-  return <div className={`rounded-[10px] border px-3.5 py-2.5 text-sm ${TONES[tone]}`}>{children}</div>;
+  return <div className={`rounded-[6px] border px-3.5 py-2.5 text-sm ${TONES[tone]}`}>{children}</div>;
 }
 
 export function Field({ label, hint, children, error }: { label: string; hint?: ReactNode; children: ReactNode; error?: string }) {

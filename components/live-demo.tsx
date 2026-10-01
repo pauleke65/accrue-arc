@@ -8,7 +8,7 @@ import { Button, TxLink } from "./ui";
 
 function StepIcon({ status }: { status: DemoStep["status"] }) {
   if (status === "done") return <CheckCircle2 className="size-5 text-paid" />;
-  if (status === "running") return <Loader2 className="size-5 animate-spin text-accent-bright" />;
+  if (status === "running") return <Loader2 className="size-5 animate-spin text-accent" />;
   if (status === "failed") return <XCircle className="size-5 text-refund" />;
   return <Circle className="size-5 text-faint" />;
 }
@@ -71,13 +71,13 @@ export function LiveDemo({ compact = false }: { compact?: boolean }) {
   const succeeded = run?.finishedAt && !run.error;
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card overflow-hidden border-white/60 shadow-[0_24px_60px_-28px_rgb(27_49_88/0.45)]">
       <div className="border-b border-line p-5 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="size-2 rounded-full bg-paid pulse" aria-hidden />
           <span className="eyebrow text-paid">Live on Arc mainnet</span>
         </div>
-        <h3 className="mt-2 text-xl font-semibold">Watch a real job settle</h3>
+        <h3 className="mt-3 text-2xl">Watch a real job settle</h3>
         {!compact && (
           <p className="mt-1.5 text-sm text-dim">
             Two demo accounts run a 0.10 USDC job end to end: the client posts and locks the budget, the worker delivers a page, and the Proof Engine

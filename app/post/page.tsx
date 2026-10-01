@@ -158,12 +158,12 @@ export default function PostPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <div className="eyebrow">New job</div>
-        <h1 className="mt-2 text-3xl font-semibold">Post an objective, lock the budget</h1>
+        <div className="eyebrow brace">New job</div>
+        <h1 className="mt-4 text-4xl sm:text-5xl">Post an objective, lock the budget</h1>
         <p className="mt-2 text-dim">Say what done looks like. The brief is stored on chain with the job, and nobody can change it once it&apos;s funded.</p>
       </div>
 
-      <Section eyebrow="1" title="The work">
+      <Section eyebrow="//Step.01" title="The work">
         <div className="space-y-4">
           <Field label="Title">
             <input value={title} maxLength={120} onChange={(e) => setTitle(e.target.value)} placeholder="Add a pricing page to our site" />
@@ -174,11 +174,11 @@ export default function PostPage() {
         </div>
       </Section>
 
-      <Section eyebrow="2" title="Definition of done">
+      <Section eyebrow="//Step.02" title="Definition of done">
         <div className="grid gap-2 sm:grid-cols-2">
           {KINDS.map(({ kind: k, title: t, body, icon: Icon }) => (
-            <button key={k} type="button" onClick={() => setKind(k)} className={`rounded-[12px] border p-3.5 text-left transition-colors ${kind === k ? "border-accent/60 bg-accent-soft" : "border-line hover:border-line-strong"}`}>
-              <div className="flex items-center gap-2 font-medium"><Icon className="size-4 text-accent-bright" /> {t}</div>
+            <button key={k} type="button" onClick={() => setKind(k)} className={`rounded-[6px] border p-3.5 text-left transition-colors ${kind === k ? "border-accent/60 bg-accent-soft" : "border-line hover:border-line-strong"}`}>
+              <div className="flex items-center gap-2 font-medium"><Icon className="size-4 text-accent" /> {t}</div>
               <div className="mt-1 text-xs text-dim">{body}</div>
             </button>
           ))}
@@ -213,7 +213,7 @@ export default function PostPage() {
         </div>
       </Section>
 
-      <Section eyebrow="3" title="Budget, worker and panel">
+      <Section eyebrow="//Step.03" title="Budget, worker and panel">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Budget (USDC)" hint="Paid in full on a passing verdict, refunded in full otherwise.">
             <input value={budget} onChange={(e) => setBudget(e.target.value)} inputMode="decimal" className="num" />
@@ -227,11 +227,11 @@ export default function PostPage() {
         <div className="mt-5">
           <div className="mb-2 text-sm font-medium">Who does the work</div>
           <div className="grid gap-2 sm:grid-cols-2">
-            <button type="button" onClick={() => setHire("open")} className={`rounded-[12px] border p-3 text-left text-sm ${hire === "open" ? "border-accent/60 bg-accent-soft" : "border-line"}`}>
+            <button type="button" onClick={() => setHire("open")} className={`rounded-[6px] border p-3 text-left text-sm ${hire === "open" ? "border-accent/60 bg-accent-soft" : "border-line"}`}>
               <div className="font-medium">Open to applicants</div>
               <div className="mt-0.5 text-xs text-dim">The budget locks when you pick someone</div>
             </button>
-            <button type="button" onClick={() => setHire("named")} className={`rounded-[12px] border p-3 text-left text-sm ${hire === "named" ? "border-accent/60 bg-accent-soft" : "border-line"}`}>
+            <button type="button" onClick={() => setHire("named")} className={`rounded-[6px] border p-3 text-left text-sm ${hire === "named" ? "border-accent/60 bg-accent-soft" : "border-line"}`}>
               <div className="font-medium">Someone I know</div>
               <div className="mt-0.5 text-xs text-dim">Post and lock the budget now, in one step</div>
             </button>
@@ -248,8 +248,8 @@ export default function PostPage() {
             {PRESETS.map(({ key: k, title: t, body, icon: Icon }) => {
               const disabled = (k !== "client" && !engine) || (k === "engine" && kind === "manual");
               return (
-                <button key={k} type="button" disabled={disabled} onClick={() => setPreset(k)} className={`flex w-full items-start gap-3 rounded-[12px] border p-3.5 text-left transition-colors disabled:opacity-40 ${effectivePreset === k ? "border-accent/60 bg-accent-soft" : "border-line hover:border-line-strong"}`}>
-                  <Icon className="mt-0.5 size-4 shrink-0 text-accent-bright" />
+                <button key={k} type="button" disabled={disabled} onClick={() => setPreset(k)} className={`flex w-full items-start gap-3 rounded-[6px] border p-3.5 text-left transition-colors disabled:opacity-40 ${effectivePreset === k ? "border-accent/60 bg-accent-soft" : "border-line hover:border-line-strong"}`}>
+                  <Icon className="mt-0.5 size-4 shrink-0 text-accent" />
                   <div>
                     <div className="text-sm font-medium">{t}</div>
                     <div className="mt-0.5 text-xs text-dim">{body}</div>
@@ -276,7 +276,7 @@ export default function PostPage() {
         ) : (
           <div className="space-y-3">
             {draft.amount !== undefined && (
-              <div className="flex items-center justify-between rounded-[10px] border border-line bg-page px-4 py-3 text-sm">
+              <div className="flex items-center justify-between rounded-[6px] border border-line bg-raised px-4 py-3 text-sm">
                 <span className="text-dim">{hire === "named" ? "You lock now" : "You lock when you assign"}</span>
                 <Usdc value={draft.amount} className="text-lg font-semibold" />
               </div>

@@ -3,7 +3,7 @@ import { CONTRACTS, USDC } from "../arc";
 import { jobsAbi } from "../abi";
 import { publicClient } from "../jobs";
 import { encodeBrief, encodePanel, encodeEvidence, expiryFor, type Brief } from "../policy";
-import { setupState, usdcBalance } from "./bootstrap";
+import { DEMO_BUDGET, setupState, usdcBalance } from "./bootstrap";
 import { evaluateAndVote } from "./engine";
 import { write } from "./tx";
 import { account, seedStatus, type WalletName } from "./wallets";
@@ -16,9 +16,9 @@ import { account, seedStatus, type WalletName } from "./wallets";
  * evidence and votes. Every step is a real transaction with its own hash.
  */
 
-export const DEMO_BUDGET = 100_000n; // 0.10 USDC
+export { DEMO_BUDGET };
 const COOLDOWN_MS = 12_000;
-const DAILY_CAP = 150;
+const DAILY_CAP = 60; // at ~0.02 USDC in fees per run
 
 export type DemoStep = {
   key: "post" | "deliver" | "check" | "pay";
@@ -89,8 +89,19 @@ export async function startDemo(baseUrl: string): Promise<DemoRun> {
   const client = account(clientName);
   const worker = account(workerName);
   // Whichever wallet holds the budget plays the client.
-  const [clientBalance, workerBalance] = await Promise.all([usdcBalance(client.address), usdcBalance(worker.address)]);
-  const swap = clientBalance < DEMO_BUDGET + 50_000n && workerBalance > clientBalance;
+  const release = (message: string) => {
+    state.busy = false;
+    state.today--;
+    return new Error(message);
+  };
+  const [clientBalance, workerBalance] = await Promise.all([usdcBalance(client.address), usdcBalance(worker.address)]).catch(() => {
+    throw release("Arc's RPC did not answer. Try again in a few seconds.");
+  });
+  // The post needs the budget plus its up-front gas; the other side only a submit.
+  const richest = clientBalance > workerBalance ? clientBalance : workerBalance;
+  const poorest = clientBalance > workerBalance ? workerBalance : clientBalance;
+  if (richest < DEMO_BUDGET + 35_000n || poorest < 6_000n) throw release("The demo accounts are being topped up. Try again in a minute.");
+  const swap = clientBalance < DEMO_BUDGET + 35_000n && workerBalance > clientBalance;
   const c = swap ? worker : client;
   const w = swap ? client : worker;
   const cName = swap ? workerName : clientName;

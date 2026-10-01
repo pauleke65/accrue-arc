@@ -158,7 +158,7 @@ function Assign({ job, reload }: { job: JobDetail; reload: () => void }) {
       <div className="text-sm font-medium">Applications ({job.applications.length})</div>
       {job.applications.length === 0 && <p className="text-sm text-dim">No one has applied yet. Share this page with people who can do the work.</p>}
       {job.applications.map((a) => (
-        <div key={a.applicant} className="rounded-[10px] border border-line bg-page p-3">
+        <div key={a.applicant} className="rounded-[6px] border border-line bg-raised p-3">
           <AddressLink address={a.applicant} />
           {a.pitch && <p className="mt-1.5 text-sm text-dim">“{a.pitch}”</p>}
           <Button size="sm" className="mt-2.5" busy={busy === a.applicant} disabled={short} onClick={() => run(a.applicant, async () => {
@@ -236,7 +236,7 @@ function Deliver({ job, reload }: { job: JobDetail; reload: () => void }) {
         </Button>
       )}
       {lines && (
-        <ul className="space-y-1.5 rounded-[10px] border border-line bg-page p-3">
+        <ul className="space-y-1.5 rounded-[6px] border border-line bg-raised p-3">
           {lines.map((line) => (
             <li key={line.label} className="flex items-start gap-2 text-sm">
               {line.passed ? <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-paid" /> : <XCircle className="mt-0.5 size-4 shrink-0 text-refund" />}

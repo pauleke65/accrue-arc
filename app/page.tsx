@@ -69,39 +69,40 @@ export default async function Home() {
   ];
 
   return (
-    <div className="space-y-20">
-      <section className="grid items-start gap-10 lg:grid-cols-[1.05fr_1fr]">
-        <div className="pt-2 rise">
-          <div className="eyebrow">Outcome marketplace · Live on Arc mainnet</div>
-          <h1 className="mt-4 text-4xl font-semibold leading-[1.08] tracking-tight sm:text-[3.4rem]">
-            Pay for work when it&apos;s <span className="text-accent-bright">proven done.</span>
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-dim">
-            Post an objective with a USDC budget. It stays locked on Arc until a panel verifies the delivery: Accrue&apos;s Proof Engine agent, the
-            people you name, or both. Then the worker is paid in under a second, and even the network fee is paid in USDC.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <ButtonLink href="/post" size="lg">
-              Post a job <ArrowRight className="size-4" />
-            </ButtonLink>
-            <ButtonLink href="/jobs" size="lg" variant="secondary">
-              Browse jobs
-            </ButtonLink>
+    <div className="space-y-24">
+      <section className="hero sky bleed relative overflow-hidden">
+        <LineArt />
+        <div className="relative mx-auto grid max-w-6xl items-start gap-12 px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-[1.05fr_1fr]">
+          <div className="rise lg:pt-6">
+            <div className="eyebrow brace !text-ink">Outcome marketplace on Arc</div>
+            <h1 className="mt-6 text-[2.9rem] sm:text-[4.4rem]">Pay for work when it&apos;s proven done.</h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/85">
+              Post an objective with a USDC budget. It stays locked on Arc until a panel verifies the delivery: Accrue&apos;s Proof Engine agent, the
+              people you name, or both. Then the worker is paid in under a second, and even the network fee is paid in USDC.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/post" size="lg">
+                Post a job <ArrowRight className="size-4" />
+              </ButtonLink>
+              <ButtonLink href="/jobs" size="lg" variant="secondary">
+                Browse jobs
+              </ButtonLink>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {["ERC-8183 jobs", "ERC-8004 agent", "USDC gas", "No admin keys", "Passkeys"].map((tag) => (
+                <span key={tag} className="eyebrow rounded-[4px] border border-accent/60 bg-white/40 px-2.5 py-1 !text-[0.66rem] !text-accent">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-faint">
-            <span>ERC-8183 jobs</span>
-            <span>ERC-8004 agent</span>
-            <span>USDC gas</span>
-            <span>Ownerless contracts</span>
-            <span>Passkey accounts</span>
+          <div id="demo" className="scroll-mt-28 rise" style={{ animationDelay: "80ms" }}>
+            <LiveDemo />
           </div>
-        </div>
-        <div className="rise" style={{ animationDelay: "80ms" }}>
-          <LiveDemo />
         </div>
       </section>
 
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat label="Jobs on Accrue" value={<span className="num">{total}</span>} hint={deployed ? "Read live from Arc" : "Contracts deploying"} />
         <Stat label="Paid to workers" value={<Usdc value={sums.paid} />} hint="Completed jobs" />
         <Stat label="In escrow now" value={<Usdc value={sums.escrowed} />} hint="Funded, not yet decided" />
@@ -109,56 +110,57 @@ export default async function Home() {
       </section>
 
       <section>
-        <div className="eyebrow">How it works</div>
-        <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Three steps, all on chain</h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="eyebrow brace">How it works</div>
+        <h2 className="mt-4 text-4xl sm:text-5xl">Three steps, all on chain</h2>
+        <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
           {STEPS.map((step, i) => (
-            <div key={step.title} className="card p-5">
-              <div className="num grid size-8 place-items-center rounded-full bg-accent-soft text-sm text-accent-bright">{i + 1}</div>
-              <h3 className="mt-4 font-semibold">{step.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-dim">{step.body}</p>
+            <div key={step.title}>
+              <div className="eyebrow slashes border-b border-sky pb-3">Step.0{i + 1}</div>
+              <h3 className="mt-5 text-2xl">{step.title}</h3>
+              <p className="mt-3 leading-relaxed text-dim">{step.body}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section>
-        <div className="eyebrow">Rules nobody can bend</div>
-        <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Fair to both sides, enforced by the contract</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="eyebrow brace">Rules nobody can bend</div>
+        <h2 className="mt-4 max-w-3xl text-4xl sm:text-5xl">Fair to both sides, enforced by the contract</h2>
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3">
           {RULES.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="card p-5">
-              <Icon className="size-5 text-accent-bright" />
-              <h3 className="mt-3 font-semibold">{title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-dim">{body}</p>
+            <div key={title} className="ticks -ml-px -mt-px p-7">
+              <Icon className="size-7 text-amber" strokeWidth={1.5} />
+              <h3 className="mt-5 text-2xl">{title}</h3>
+              <p className="mt-3 text-[0.95rem] leading-relaxed text-dim">{body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="card overflow-hidden">
-        <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="border-b border-line p-6 lg:border-b-0 lg:border-r sm:p-8">
-            <div className="eyebrow">Why Arc</div>
-            <h2 className="mt-2 text-2xl font-semibold">Built for Arc, not ported to it</h2>
-            <p className="mt-3 text-sm leading-relaxed text-dim">
+      <section className="bleed relative overflow-hidden bg-sand">
+        <LineArt tone="sand" />
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <div className="eyebrow brace">Why Arc</div>
+            <h2 className="mt-4 text-4xl sm:text-5xl">Built for Arc, not ported to it</h2>
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink/85">
               Arc asks builders for <em>outcome marketplaces</em>: post an objective and a USDC bounty for agents or humans to deliver, with payment
               released on verification. That is Accrue, and Arc is the chain where it works best.
             </p>
-            <div className="mt-5 space-y-2 text-sm">
-              <a className="link block" href={explorer.address(CONTRACTS.jobs)} target="_blank" rel="noreferrer">AccrueJobs (ERC-8183) on the explorer →</a>
-              <a className="link block" href={explorer.address(CONTRACTS.panel)} target="_blank" rel="noreferrer">AccruePanel (evaluator + hook) →</a>
-              <a className="link block" href={explorer.address(ERC8004.identity)} target="_blank" rel="noreferrer">ERC-8004 identity registry →</a>
-              <Link className="link block" href="/agents">Building an agent? Use Accrue from code →</Link>
+            <div className="mt-8 space-y-2.5">
+              <a className="flex items-center gap-2 text-ink hover:underline" href={explorer.address(CONTRACTS.jobs)} target="_blank" rel="noreferrer">AccrueJobs (ERC-8183) on the explorer <ArrowRight className="size-4" /></a>
+              <a className="flex items-center gap-2 text-ink hover:underline" href={explorer.address(CONTRACTS.panel)} target="_blank" rel="noreferrer">AccruePanel (evaluator + hook) <ArrowRight className="size-4" /></a>
+              <a className="flex items-center gap-2 text-ink hover:underline" href={explorer.address(ERC8004.identity)} target="_blank" rel="noreferrer">ERC-8004 identity registry <ArrowRight className="size-4" /></a>
+              <Link className="flex items-center gap-2 text-ink hover:underline" href="/agents">Building an agent? Use Accrue from code <ArrowRight className="size-4" /></Link>
             </div>
           </div>
-          <div className="divide-y divide-line">
+          <div className="divide-y divide-ink/10 rounded-[6px] bg-white/70 backdrop-blur-sm">
             {arcReasons.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="flex gap-4 p-5 sm:px-8">
-                <Icon className="mt-0.5 size-5 shrink-0 text-paid" />
+              <div key={title} className="flex gap-4 p-5 sm:px-7">
+                <Icon className="mt-1 size-5 shrink-0 text-amber" strokeWidth={1.75} />
                 <div>
-                  <div className="font-medium">{title}</div>
-                  <p className="mt-1 text-sm text-dim">{body}</p>
+                  <h3 className="text-lg">{title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-dim">{body}</p>
                 </div>
               </div>
             ))}
@@ -169,24 +171,46 @@ export default async function Home() {
       <section>
         <div className="flex items-end justify-between gap-4">
           <div>
-            <div className="eyebrow">On chain now</div>
-            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Recent jobs</h2>
+            <div className="eyebrow brace">On chain now</div>
+            <h2 className="mt-4 text-4xl sm:text-5xl">Recent jobs</h2>
           </div>
-          <Link href="/jobs" className="link text-sm">
-            All jobs →
+          <Link href="/jobs" className="flex items-center gap-1.5 text-sm text-ink hover:underline">
+            All jobs <ArrowRight className="size-4" />
           </Link>
         </div>
-        <div className="mt-6 grid gap-3 md:grid-cols-2">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           {jobs.slice(0, 6).map((job) => (
             <JobCard key={job.id} job={job} engine={engine} />
           ))}
           {jobs.length === 0 && (
-            <div className="card p-6 text-sm text-dim md:col-span-2">
+            <div className="ticks p-7 text-dim md:col-span-2">
               {deployed ? "No jobs yet. Run the live demo above, or post the first one." : "The contracts are being deployed to Arc mainnet. Jobs appear here as soon as they exist."}
             </div>
           )}
         </div>
       </section>
     </div>
+  );
+}
+
+/** Thin white arcs and nodes, the line art behind arc.io's hero. */
+function LineArt({ tone = "sky" }: { tone?: "sky" | "sand" }) {
+  const stroke = tone === "sky" ? "rgb(255 255 255 / 0.85)" : "rgb(255 255 255 / 0.7)";
+  return (
+    <svg className="pointer-events-none absolute inset-0 size-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden>
+      <g fill="none" stroke={stroke} strokeWidth="1.5">
+        <path d="M-40 380C180 360 380 240 450 -20" />
+        <path d="M-20 360 320 650V820" />
+        <path d="M0 716H1440" />
+        <path d="M960 820C1000 600 1180 410 1480 395" />
+        <circle cx="1240" cy="140" r="190" opacity="0.55" />
+      </g>
+      <g fill={stroke}>
+        <circle cx="74" cy="381" r="5" />
+        <circle cx="274" cy="716" r="5" />
+        <circle cx="1165" cy="490" r="5" />
+        <circle cx="1052" cy="327" r="4" />
+      </g>
+    </svg>
   );
 }

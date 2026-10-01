@@ -1,113 +1,183 @@
 @import "tailwindcss";
 
+/*
+ * Arc's visual language: white pages, navy ink, light Space Grotesk headlines,
+ * DM Sans text, Space Mono labels in braces, a sky-to-sand gradient with
+ * thin line art, black buttons and crop-marked cards.
+ */
 @theme {
-  --color-page: #070b14;
-  --color-surface: #0d1422;
-  --color-raised: #121b2d;
-  --color-line: rgb(148 163 184 / 0.14);
-  --color-line-strong: rgb(148 163 184 / 0.26);
-  --color-ink: #e7edf7;
-  --color-dim: #9aa8bd;
-  --color-faint: #66758c;
-  --color-accent: #4c8dff;
-  --color-accent-bright: #74a7ff;
-  --color-accent-soft: rgb(76 141 255 / 0.12);
-  --color-paid: #3ddc97;
-  --color-paid-soft: rgb(61 220 151 / 0.12);
-  --color-wait: #f5b544;
-  --color-wait-soft: rgb(245 181 68 / 0.12);
-  --color-refund: #ff6b81;
-  --color-refund-soft: rgb(255 107 129 / 0.12);
+  --color-page: #ffffff;
+  --color-surface: #ffffff;
+  --color-raised: #f6f5f6;
+  --color-sand: #eddcc6;
+  --color-sky: #acc6e9;
+  --color-line: rgb(27 49 88 / 0.12);
+  --color-line-strong: rgb(27 49 88 / 0.24);
+  --color-ink: #1b3158;
+  --color-dim: #4d5866;
+  --color-faint: #7a858e;
+  --color-accent: #2f578c;
+  --color-accent-bright: #3860be;
+  --color-accent-soft: rgb(172 198 233 / 0.32);
+  --color-amber: #e9a13f;
+  --color-paid: #13805a;
+  --color-paid-soft: rgb(19 128 90 / 0.09);
+  --color-wait: #a8620c;
+  --color-wait-soft: rgb(233 161 63 / 0.16);
+  --color-refund: #b8324b;
+  --color-refund-soft: rgb(184 50 75 / 0.08);
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  --radius-card: 14px;
-}
-
-:root {
-  color-scheme: dark;
-}
-
-html,
-body {
-  background: var(--color-page);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+  --radius-card: 6px;
 }
 
-body {
-  min-height: 100vh;
-  background-image:
-    radial-gradient(60rem 30rem at 10% -10%, rgb(76 141 255 / 0.10), transparent 60%),
-    radial-gradient(50rem 26rem at 110% 0%, rgb(61 220 151 / 0.06), transparent 60%);
-  background-attachment: fixed;
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: rgb(172 198 233 / 0.6);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    background: #fff;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 6px;
+    color: var(--color-ink);
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgb(172 198 233 / 0.55);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-faint);
+  }
 }
 
-::selection {
-  background: rgb(76 141 255 / 0.35);
-}
+@layer components {
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
 
-a {
-  color: inherit;
-}
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
 
-.mono {
-  font-family: var(--font-mono);
-  font-feature-settings: "zero" 1;
-}
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
 
-.num {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
+  /* Crop marks on the corners, as on arc.io's feature grid. */
+  .ticks {
+    --tick: rgb(27 49 88 / 0.28);
+    background:
+      linear-gradient(var(--tick), var(--tick)) top left / 14px 2px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top left / 2px 14px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top right / 14px 2px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top right / 2px 14px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom left / 14px 2px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom left / 2px 14px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom right / 14px 2px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom right / 2px 14px no-repeat,
+      var(--color-surface);
+    border: 1px solid var(--color-line);
+  }
 
-.card {
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.015), transparent), var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-}
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+    font-weight: 400;
+  }
 
-.eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-dim);
-  font-weight: 600;
-}
+  /* {LABEL} in Arc's amber braces. */
+  .brace::before {
+    content: "{";
+    color: var(--color-amber);
+    margin-right: 0.15em;
+  }
+  .brace::after {
+    content: "}";
+    color: var(--color-amber);
+    margin-left: 0.15em;
+  }
 
-.link {
-  color: var(--color-accent-bright);
-  text-decoration: none;
-}
-.link:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+  /* //LABEL, Arc's index marker. */
+  .slashes::before {
+    content: "//";
+    margin-right: 0.1em;
+    color: var(--color-faint);
+  }
 
-input,
-textarea,
-select {
-  background: var(--color-page);
-  border: 1px solid var(--color-line-strong);
-  border-radius: 10px;
-  color: var(--color-ink);
-  padding: 0.6rem 0.75rem;
-  width: 100%;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgb(76 141 255 / 0.2);
-}
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-faint);
+  /* Arc's hero: sky at the top, sand at the bottom, full bleed. */
+  .sky {
+    background:
+      radial-gradient(80rem 30rem at 50% 115%, rgb(246 216 186 / 0.95), transparent 70%),
+      linear-gradient(180deg, #9fd0f8 0%, #cfe6fa 38%, #eef0f2 66%, #f7e6d6 100%);
+  }
+  .bleed {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  .link {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 @keyframes pulse-dot {

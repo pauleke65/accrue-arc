@@ -30,8 +30,8 @@ export default function StatusPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <div className="eyebrow">Transparency</div>
-        <h1 className="mt-2 text-3xl font-semibold">Deployment status</h1>
+        <div className="eyebrow brace">Transparency</div>
+        <h1 className="mt-4 text-4xl sm:text-5xl">Deployment status</h1>
         <p className="mt-2 text-dim">Everything this server does on Arc, and with which wallets. No secrets are shown because none are needed to verify any of it.</p>
       </div>
 
@@ -62,7 +62,7 @@ export default function StatusPage() {
 
         <Section eyebrow="Agent" title="Proof Engine">
           <div className="flex items-center gap-2 text-sm">
-            <Bot className="size-4 text-accent-bright" /> Watching {data.engine.watching} open job{data.engine.watching === 1 ? "" : "s"}
+            <Bot className="size-4 text-accent" /> Watching {data.engine.watching} open job{data.engine.watching === 1 ? "" : "s"}
             {data.engine.lastTick && <span className="text-faint">· checked {relative(data.engine.lastTick)}</span>}
           </div>
           <ul className="mt-3 space-y-2">

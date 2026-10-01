@@ -1,20 +1,20 @@
 import { erc20Abi, getAddress, isAddress, type Hex } from "viem";
 import { USDC } from "../arc";
 import { readJobs } from "../jobs";
-import { setupState, usdcBalance } from "./bootstrap";
+import { OPS_RESERVE, setupState, usdcBalance } from "./bootstrap";
 import { write } from "./tx";
 import { account, seedStatus } from "./wallets";
 
 /**
  * First fee, covered. On Arc the network fee is paid in USDC, so a worker who
  * has never held any cannot submit their first delivery, and a new reviewer
- * cannot vote. The server sends a one-time 0.05 USDC (dozens of transactions'
+ * cannot vote. The server sends a one-time 0.02 USDC (a few transactions'
  * worth) to someone named on a funded job of at least 1 USDC. Gaming it means
  * locking more USDC in a job than the stipend is worth.
  */
 
-const STIPEND = 50_000n; // 0.05 USDC
-const NEEDS_BELOW = 20_000n; // 0.02 USDC
+const STIPEND = 20_000n; // 0.02 USDC
+const NEEDS_BELOW = 10_000n; // 0.01 USDC
 const MIN_BUDGET = 1_000_000n; // 1 USDC
 const DAILY_CAP = 60;
 
@@ -50,6 +50,9 @@ export async function sponsor(addressInput: string, jobId: number): Promise<{ tx
   }
   if (state.today >= DAILY_CAP) return { tx: null, message: "Today's covered fees are used up. Add a little USDC to continue." };
 
+  if ((await usdcBalance(account("ops").address)) < STIPEND + OPS_RESERVE)
+    return { tx: null, message: "Covered fees are paused while Accrue tops up. Add a little USDC to continue." };
+
   state.given.add(lower);
   state.today++;
   try {
@@ -59,7 +62,7 @@ export async function sponsor(addressInput: string, jobId: number): Promise<{ tx
       functionName: "transfer",
       args: [address, STIPEND],
     });
-    return { tx: sent.hash, message: "Sent 0.05 USDC to cover your first network fees." };
+    return { tx: sent.hash, message: "Sent 0.02 USDC to cover your first network fees." };
   } catch (error) {
     state.given.delete(lower);
     state.today--;

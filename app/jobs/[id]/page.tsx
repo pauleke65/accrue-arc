@@ -52,11 +52,11 @@ export default function JobPage({ params }: { params: Promise<{ id: string }> })
             <PhaseBadge phase={job.phase} />
             {!isSettled(job.phase) && <span className="text-xs text-faint">updates live</span>}
           </div>
-          <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">{job.brief?.title ?? `ERC-8183 job #${job.id}`}</h1>
+          <h1 className="mt-3 text-3xl sm:text-[2.6rem]">{job.brief?.title ?? `ERC-8183 job #${job.id}`}</h1>
         </div>
         <div className="text-right">
           <div className="eyebrow">Budget</div>
-          <Usdc value={job.budget} className="text-3xl font-semibold" />
+          <Usdc value={job.budget} className="font-[family-name:var(--font-display)] text-4xl font-light" />
         </div>
       </div>
       <StatusLine job={job} now={now} />

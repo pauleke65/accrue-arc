@@ -71,9 +71,9 @@ export function BriefSection({ job }: { job: JobDetail }) {
   return (
     <Section eyebrow="The brief" title="What the client asked for">
       <p className="whitespace-pre-wrap text-[0.95rem] leading-relaxed text-dim">{job.brief.brief}</p>
-      <div className="mt-5 rounded-[12px] border border-line bg-page p-4">
+      <div className="mt-5 rounded-[12px] border border-line bg-raised p-4">
         <div className="flex items-center gap-2 text-sm font-medium">
-          <Icon className="size-4 text-accent-bright" /> Definition of done · {CHECK_LABELS[job.brief.check.kind]}
+          <Icon className="size-4 text-accent" /> Definition of done · {CHECK_LABELS[job.brief.check.kind]}
         </div>
         <p className="mt-1.5 text-sm text-ink">{describeCheck(job.brief.check)}</p>
         {job.brief.check.kind !== "manual" && (
@@ -132,7 +132,7 @@ function VoteRow({ vote, job, people }: { vote: VoteView; job: JobDetail; people
     <li className="py-4 first:pt-0 last:pb-0">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          {isEngine ? <Bot className="size-4 text-accent-bright" /> : null}
+          {isEngine ? <Bot className="size-4 text-accent" /> : null}
           <span className="font-medium">{role}</span>
           {isEngine && people.agentId && <Badge tone="accent">ERC-8004 #{people.agentId}</Badge>}
           <AddressLink address={vote.reviewer} you={!!people.me && people.me.toLowerCase() === vote.reviewer.toLowerCase()} />
@@ -205,7 +205,7 @@ export function PartiesSection({ job, people }: { job: JobDetail; people: People
         {job.panel?.reviewers.map((r) => (
           <div key={r} className="flex items-center justify-between gap-3">
             <dt className="flex items-center gap-1.5 text-dim">
-              {who(r, job, people) === "Proof Engine" ? <><Bot className="size-3.5 text-accent-bright" /> Proof Engine</> : `Reviewer${who(r, job, people) === "Client" ? " (client)" : ""}`}
+              {who(r, job, people) === "Proof Engine" ? <><Bot className="size-3.5 text-accent" /> Proof Engine</> : `Reviewer${who(r, job, people) === "Client" ? " (client)" : ""}`}
             </dt>
             <dd><AddressLink address={r} you={me === r.toLowerCase()} /></dd>
           </div>

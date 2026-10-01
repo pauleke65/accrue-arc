@@ -27,19 +27,19 @@ export function JobCard({ job, engine }: { job: JobView; engine?: string | null 
   const Icon = kind ? CHECK_ICONS[kind] : Bot;
   const when = job.timeline.closedAt || job.timeline.submittedAt || job.timeline.fundedAt || job.timeline.createdAt;
   return (
-    <Link href={`/jobs/${job.id}`} className="card group block p-4 transition-colors hover:border-accent/40 sm:p-5">
+    <Link href={`/jobs/${job.id}`} className="card group block min-w-0 p-4 transition-[border-color,box-shadow] hover:border-ink/30 hover:shadow-[0_12px_32px_-20px_rgb(27_49_88/0.5)] sm:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-3">
-          <div className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg bg-accent-soft text-accent-bright">
+          <div className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-[6px] bg-accent-soft text-accent">
             <Icon className="size-4.5" />
           </div>
           <div className="min-w-0">
-            <div className="truncate font-medium group-hover:text-accent-bright">{job.brief?.title ?? `ERC-8183 job #${job.id}`}</div>
+            <div className="truncate font-medium group-hover:underline">{job.brief?.title ?? `ERC-8183 job #${job.id}`}</div>
             <div className="mt-0.5 line-clamp-1 text-sm text-dim">{job.brief ? describeCheck(job.brief.check) : job.description.slice(0, 120)}</div>
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <Usdc value={job.budget} className="font-semibold" />
+          <Usdc value={job.budget} className="font-medium" />
           <div className="mt-1">
             <PhaseBadge phase={job.phase} />
           </div>

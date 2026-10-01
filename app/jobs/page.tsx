@@ -29,8 +29,8 @@ export default function JobsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="eyebrow">Read live from Arc</div>
-          <h1 className="mt-2 text-3xl font-semibold">Jobs</h1>
+          <div className="eyebrow brace">Read live from Arc</div>
+          <h1 className="mt-4 text-4xl sm:text-5xl">Jobs</h1>
           <p className="mt-1 text-dim">Every Accrue job on Arc mainnet, newest first. {data ? `${data.total} in total.` : ""}</p>
         </div>
         <ButtonLink href="/post">Post a job</ButtonLink>
@@ -40,8 +40,8 @@ export default function JobsPage() {
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
-              filter === f.key ? "border-accent/50 bg-accent-soft text-accent-bright" : "border-line text-dim hover:text-ink"
+            className={`eyebrow rounded-[4px] border px-3 py-1.5 !text-[0.68rem] transition-colors ${
+              filter === f.key ? "border-accent bg-accent !text-white" : "border-accent/60 !text-accent hover:bg-accent-soft"
             }`}
           >
             {f.label}

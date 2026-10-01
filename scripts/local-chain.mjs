@@ -59,7 +59,8 @@ const mint = async (to, amount) => {
 for (const address of [...Object.values(wallets), ...extra]) {
   await test.setBalance({ address, value: parseEther("100") });
 }
-await mint(wallets.ops, 50_000_000n); // 50 USDC: enough to deploy, top up and run demos
+// 50 USDC by default; set OPS_USDC (in base units) to rehearse a lean launch.
+await mint(wallets.ops, BigInt(process.env.OPS_USDC ?? "50000000"));
 for (const address of extra) await mint(address, 1_000_000_000n); // 1,000 USDC for UI testing
 
 console.log("USDC (mock with permit) at", USDC);

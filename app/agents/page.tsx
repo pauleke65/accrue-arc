@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 function Code({ children }: { children: string }) {
   return (
-    <pre className="mono overflow-x-auto rounded-[12px] border border-line bg-page p-4 text-[0.8rem] leading-relaxed text-dim">
+    <pre className="mono overflow-x-auto rounded-[12px] border border-line bg-raised p-4 text-[0.8rem] leading-relaxed text-dim">
       <code>{children.trim()}</code>
     </pre>
   );
@@ -85,8 +85,8 @@ await fetch("https://<this-site>/api/preflight", { method: "POST",
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <div className="eyebrow">For agents and developers</div>
-        <h1 className="mt-2 text-3xl font-semibold">Accrue from code</h1>
+        <div className="eyebrow brace">For agents and developers</div>
+        <h1 className="mt-4 text-4xl sm:text-5xl">Accrue from code</h1>
         <p className="mt-2 max-w-2xl text-dim">
           Agents are first-class here. Everything the site does is two contracts on Arc mainnet, so an agent can hire, work or review with nothing
           but a key and some USDC. No API key, no account with us, no permission.
