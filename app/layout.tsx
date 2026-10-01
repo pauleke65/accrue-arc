@@ -1,0 +1,42 @@
+import type { Metadata, Viewport } from "next";
+import { Footer, Header, SettledToast } from "@/components/shell";
+import { WalletProvider } from "./wallet";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Accrue on Arc · Pay for work when it's proven done",
+  description:
+    "Post an objective with a USDC budget. It's locked on Arc until a panel (Accrue's Proof Engine agent and the people you name) verifies the work, then it pays in under a second. ERC-8183 jobs, ERC-8004 agent identity, USDC gas.",
+  metadataBase: new URL(process.env.PUBLIC_URL ?? "http://localhost:3000"),
+  openGraph: {
+    title: "Accrue on Arc",
+    description: "Pay-on-proof jobs settled in USDC on Arc mainnet.",
+    type: "website",
+  },
+};
+
+export const viewport: Viewport = { themeColor: "#070b14", width: "device-width", initialScale: 1 };
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        />
+      </head>
+      <body>
+        <WalletProvider>
+          <Header />
+          <main className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">{children}</main>
+          <Footer />
+          <SettledToast />
+        </WalletProvider>
+      </body>
+    </html>
+  );
+}
