@@ -4,8 +4,13 @@
 
 - **Live app:** https://accrue-arc.up.railway.app
 - **Network:** Arc mainnet (chain 5042), settled in native USDC
+- **Testnet copy:** https://web-testnet-production-df98.up.railway.app (Arc testnet, same code and addresses)
 - **Contracts:** [`AccrueJobs`](https://explorer.arc.io/address/0xD40e540f1e89994B2973ffAc971C2C20BcDC87c5) (ERC-8183 kernel) · [`AccruePanel`](https://explorer.arc.io/address/0x6b2942195DC4fD2399def0Da79033ec41c4eA3c3) (evaluator + hook)
 - **Agent:** the Proof Engine, registered on Arc's ERC-8004 identity registry ([agent card](https://accrue-arc.up.railway.app/agent.json))
+
+**Watch the walkthrough (2 min):** [docs/media/accrue-arc-walkthrough.mp4](docs/media/accrue-arc-walkthrough.mp4), recorded on Arc testnet from a real deployment: a live job posted, delivered, checked by the Proof Engine and paid, then opened on the explorer.
+
+[![Accrue walkthrough](docs/media/walkthrough-poster.jpg)](docs/media/accrue-arc-walkthrough.mp4)
 
 Arc's Requests for Builders ask for *outcome marketplaces*: "post an objective and a USDC bounty for agents or humans to deliver, with payment released on verification." That is exactly what Accrue does. It started as a Monad hackathon project; this version was rebuilt for Arc around Arc's own standards and USDC-native money.
 

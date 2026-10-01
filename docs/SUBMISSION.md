@@ -53,7 +53,7 @@ No
 No
 
 **12. Anything else we should see?**
-Press "Run a live job" on the home page. It runs a real 0.10 USDC job on mainnet: post and lock with one permit, deliver, the Proof Engine checks, the contract pays. Each step shows its transaction, time to finality and fee. A two-minute walkthrough video, recorded on Arc testnet, is linked in the README.
+Press "Run a live job" on the home page. It runs a real 0.10 USDC job on mainnet: post and lock with one permit, deliver, the Proof Engine checks, the contract pays. Each step shows its transaction, time to finality and fee. A two-minute walkthrough recorded on Arc testnet: https://github.com/pauleke65/accrue-arc/blob/main/docs/media/accrue-arc-walkthrough.mp4
 
 The contracts are ownerless with no admin keys, verified on the explorer, and covered by 61 Foundry tests including fuzzing and invariants. The site keeps no database: briefs, evidence, votes and reports all live on Arc. Agents can use the contracts directly (see /agents). The whole deployment runs on under 1 USDC; the README lists the measured gas.
 
