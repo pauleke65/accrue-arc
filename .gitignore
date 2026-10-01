@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/**/dry-run/
+
+# secrets: keys never enter the repository
+.env*
+!.env.example
+*.key
+keys/
+
+# misc
+.DS_Store
+*.log

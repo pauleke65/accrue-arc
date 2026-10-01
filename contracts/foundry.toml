@@ -1,0 +1,33 @@
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.30"
+# Arc targets the Osaka hard fork; Prague is the newest target solc 0.8.30
+# knows, and everything these contracts use (transient storage included)
+# behaves the same on Arc.
+evm_version = "prague"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+remappings = ["forge-std/=lib/forge-std/src/"]
+
+[fuzz]
+runs = 512
+
+[invariant]
+runs = 128
+depth = 64
+fail_on_revert = false
+
+[rpc_endpoints]
+arc = "https://rpc.mainnet.arc.io"
+arc_testnet = "https://rpc.testnet.arc.io"
+
+[lint]
+# Deadlines here are hours to days long and Arc timestamps come from a
+# permissioned validator set at one-second granularity, so comparing against
+# block.timestamp is the intended behaviour, not a risk to flag on every use.
+exclude_lints = ["block-timestamp"]
