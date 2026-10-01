@@ -20,6 +20,7 @@ export const identityAbi = parseAbi([
   "function balanceOf(address owner) view returns (uint256)",
   "function ownerOf(uint256 tokenId) view returns (address)",
   "function tokenURI(uint256 tokenId) view returns (string)",
+  "function setAgentURI(uint256 agentId, string newURI)",
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
 ]);
 
@@ -137,7 +138,7 @@ async function findAgentId(engine: Address): Promise<string | null> {
     const fromBlock = toBlock > 9_998n ? toBlock - 9_998n : 0n;
     const logs = await publicClient.getLogs({
       address: ERC8004.identity,
-      event: identityAbi[4],
+      event: identityAbi.find((item) => item.type === "event" && item.name === "Transfer")!,
       args: { from: zeroAddress, to: engine },
       fromBlock,
       toBlock,
@@ -149,8 +150,26 @@ async function findAgentId(engine: Address): Promise<string | null> {
 
 let agentScanDone = false;
 
+let uriChecked = false;
+
+/** Keeps the registration pointing at this deployment's agent card if PUBLIC_URL changes. */
+async function syncAgentUri(agentId: string): Promise<void> {
+  const uri = agentCardUrl();
+  if (uriChecked || !uri) return;
+  const id = BigInt(agentId);
+  const engine = account("engine").address;
+  const [owner, current] = await Promise.all([
+    publicClient.readContract({ address: ERC8004.identity, abi: identityAbi, functionName: "ownerOf", args: [id] }),
+    publicClient.readContract({ address: ERC8004.identity, abi: identityAbi, functionName: "tokenURI", args: [id] }),
+  ]);
+  uriChecked = true;
+  if (owner.toLowerCase() !== engine.toLowerCase() || current === uri) return;
+  const sent = await write("engine", { address: ERC8004.identity, abi: identityAbi, functionName: "setAgentURI", args: [id, uri] });
+  note(`Pointed ERC-8004 agent #${agentId} at ${uri}`, sent.hash);
+}
+
 async function ensureAgent(): Promise<void> {
-  if (setupState.agentId) return;
+  if (setupState.agentId) return syncAgentUri(setupState.agentId);
   if (!(await hasCode(ERC8004.identity))) return; // no ERC-8004 registry on this chain
   const engine = account("engine").address;
   const owned = await publicClient.readContract({
