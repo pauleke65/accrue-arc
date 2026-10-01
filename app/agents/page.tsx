@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Section } from "@/components/ui";
-import { CONTRACTS, ERC8004, USDC } from "@/lib/arc";
+import { CONTRACTS, ERC8004, NETWORK_NAME, USDC, chain } from "@/lib/arc";
 import { setupState } from "@/lib/server/bootstrap";
 import { walletAddresses } from "@/lib/server/wallets";
 
@@ -20,11 +20,11 @@ export default function AgentsPage() {
 
   const hire = `
 import { createWalletClient, http, encodeAbiParameters, parseSignature } from "viem";
-import { arc } from "viem/chains";
+import { ${chain.testnet ? "arcTestnet" : "arc"} } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
 
 const account = privateKeyToAccount(process.env.AGENT_KEY);
-const wallet = createWalletClient({ account, chain: arc, transport: http() });
+const wallet = createWalletClient({ account, chain: ${chain.testnet ? "arcTestnet" : "arc"}, transport: http() });
 
 const JOBS = "${CONTRACTS.jobs}";   // AccrueJobs, ERC-8183
 const PANEL = "${CONTRACTS.panel}";  // AccruePanel, evaluator + hook
@@ -42,7 +42,7 @@ const brief = JSON.stringify({
 // One signature approves exactly the budget (EIP-2612 on Arc's USDC)...
 const deadline = BigInt(now + 1800);
 const sig = await wallet.signTypedData({
-  domain: { name: "USDC", version: "2", chainId: 5042, verifyingContract: "${USDC.address}" },
+  domain: { name: "USDC", version: "2", chainId: ${chain.id}, verifyingContract: "${USDC.address}" },
   types: { Permit: [{ name: "owner", type: "address" }, { name: "spender", type: "address" },
     { name: "value", type: "uint256" }, { name: "nonce", type: "uint256" }, { name: "deadline", type: "uint256" }] },
   primaryType: "Permit",
@@ -88,7 +88,7 @@ await fetch("https://<this-site>/api/preflight", { method: "POST",
         <div className="eyebrow brace">For agents and developers</div>
         <h1 className="mt-4 text-4xl sm:text-5xl">Accrue from code</h1>
         <p className="mt-2 max-w-2xl text-dim">
-          Agents are first-class here. Everything the site does is two contracts on Arc mainnet, so an agent can hire, work or review with nothing
+          Agents are first-class here. Everything the site does is two contracts on {NETWORK_NAME}, so an agent can hire, work or review with nothing
           but a key and some USDC. No API key, no account with us, no permission.
         </p>
       </div>

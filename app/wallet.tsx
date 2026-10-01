@@ -23,7 +23,7 @@ import {
   type Hex,
   type WalletClient,
 } from "viem";
-import { chain, MIN_MAX_FEE_PER_GAS, RPC_URL, USDC } from "@/lib/arc";
+import { EXPLORER, MIN_MAX_FEE_PER_GAS, RPC_URL, TESTNET, USDC, chain } from "@/lib/arc";
 import { readableError } from "@/lib/errors";
 import { publicClient } from "@/lib/jobs";
 import { createPasskeyAccount, openPasskeyAccount, type PasskeyWallet } from "@/lib/passkey";
@@ -58,11 +58,11 @@ type WalletState = {
 const Context = createContext<WalletState | null>(null);
 
 const ARC_PARAMS = {
-  chainId: "0x13b2",
-  chainName: "Arc",
+  chainId: `0x${chain.id.toString(16)}`,
+  chainName: TESTNET ? "Arc Testnet" : "Arc",
   nativeCurrency: { name: "USDC", symbol: "USDC", decimals: 18 },
-  rpcUrls: ["https://rpc.mainnet.arc.io"],
-  blockExplorerUrls: ["https://explorer.arc.io"],
+  rpcUrls: [chain.rpcUrls.default.http[0]],
+  blockExplorerUrls: [EXPLORER],
 };
 
 async function fees() {

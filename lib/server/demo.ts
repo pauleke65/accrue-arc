@@ -1,5 +1,5 @@
 import { decodeEventLog, parseSignature, type Hex } from "viem";
-import { CONTRACTS, USDC } from "../arc";
+import { CONTRACTS, USDC, chain } from "../arc";
 import { jobsAbi } from "../abi";
 import { publicClient } from "../jobs";
 import { encodeBrief, encodePanel, encodeEvidence, expiryFor, type Brief } from "../policy";
@@ -9,7 +9,7 @@ import { write } from "./tx";
 import { account, seedStatus, type WalletName } from "./wallets";
 
 /**
- * The live demo: a real job on Arc mainnet, played by two server wallets that
+ * The live demo: a real job on Arc, played by two server wallets that
  * swap client and worker each run, so the 0.10 USDC budget moves back and
  * forth and only network fees are spent. The worker "delivers" a page this
  * app serves at /proof/<nonce>; the Proof Engine fetches it like any other
@@ -169,7 +169,7 @@ async function play(run: DemoRun, clientName: WalletName, workerName: WalletName
       args: [client.address],
     });
     const signature = await client.signTypedData({
-      domain: { name: "USDC", version: "2", chainId: 5042, verifyingContract: USDC.address },
+      domain: { name: "USDC", version: "2", chainId: chain.id, verifyingContract: USDC.address },
       types: {
         Permit: [
           { name: "owner", type: "address" },

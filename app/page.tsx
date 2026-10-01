@@ -3,7 +3,7 @@ import { ArrowRight, BadgeCheck, Bot, Clock3, KeyRound, ScrollText, ShieldCheck,
 import { JobCard } from "@/components/job-card";
 import { LiveDemo } from "@/components/live-demo";
 import { ButtonLink, Stat, Usdc } from "@/components/ui";
-import { CONTRACTS, ERC8004, explorer } from "@/lib/arc";
+import { CONTRACTS, ERC8004, NETWORK_NAME, explorer } from "@/lib/arc";
 import { contractsDeployed, readRecentJobs, totals, type JobView } from "@/lib/jobs";
 import { setupState } from "@/lib/server/bootstrap";
 import { cached } from "@/lib/server/http";
@@ -184,7 +184,7 @@ export default async function Home() {
           ))}
           {jobs.length === 0 && (
             <div className="ticks p-7 text-dim md:col-span-2">
-              {deployed ? "No jobs yet. Run the live demo above, or post the first one." : "The contracts are being deployed to Arc mainnet. Jobs appear here as soon as they exist."}
+              {deployed ? "No jobs yet. Run the live demo above, or post the first one." : `The contracts are being deployed to ${NETWORK_NAME}. Jobs appear here as soon as they exist.`}
             </div>
           )}
         </div>

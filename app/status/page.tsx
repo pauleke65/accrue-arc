@@ -3,6 +3,7 @@ import { Bot, CheckCircle2, CircleDashed, XCircle } from "lucide-react";
 import { AddressLink, Badge, Notice, Section, TxLink, Usdc } from "@/components/ui";
 import { useStatus } from "@/lib/client";
 import { relative } from "@/lib/format";
+import { NETWORK_NAME, chain } from "@/lib/arc";
 
 const WALLET_LABELS = {
   ops: ["Operations", "Deploys the contracts, tops up the others, covers first fees. This is the wallet that bootstraps everything."],
@@ -38,13 +39,13 @@ export default function StatusPage() {
       {data.seed !== "ok" && <Notice tone="refund">The server&apos;s key seed is {data.seed}. Set ACCRUE_KEY_SEED to 64 hex characters.</Notice>}
       {!deployed && opsEmpty && (
         <Notice tone="wait">
-          Waiting for the first USDC. Send a few USDC on Arc mainnet to the operations wallet below; the server then deploys the contracts, funds the
+          Waiting for the first USDC. Send a few USDC on {NETWORK_NAME} to the operations wallet below; the server then deploys the contracts, funds the
           Proof Engine and demo accounts, and registers the Proof Engine on ERC-8004 by itself.
         </Notice>
       )}
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Section eyebrow="Arc mainnet · chain 5042" title="Setup">
+        <Section eyebrow={`${NETWORK_NAME} · chain ${chain.id}`} title="Setup">
           <div className="space-y-2.5">
             <Ok ok={data.contracts.deployed.jobs}>AccrueJobs deployed</Ok>
             <Ok ok={data.contracts.deployed.panel}>AccruePanel deployed</Ok>

@@ -1,5 +1,5 @@
 import type { Hex } from "viem";
-import { CONTRACTS } from "../arc";
+import { CONTRACTS, chain } from "../arc";
 import { jobsAbi, panelAbi } from "../abi";
 import { isSettled, jobCount, readJobDetail, readJobs, type JobDetail } from "../jobs";
 import { decodeEvidence, type Brief } from "../policy";
@@ -119,7 +119,7 @@ export async function evaluate(job: JobDetail): Promise<Evaluation> {
   const report = JSON.stringify({
     v: 1,
     engine: "Accrue Proof Engine",
-    agent: setupState.agentId ? `erc8004:5042:${setupState.agentId}` : null,
+    agent: setupState.agentId ? `erc8004:${chain.id}:${setupState.agentId}` : null,
     job: job.id,
     deliverable: job.timeline.deliverable,
     check: brief?.check.kind ?? null,

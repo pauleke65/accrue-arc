@@ -4,6 +4,7 @@ import { JobCard } from "@/components/job-card";
 import { ButtonLink } from "@/components/ui";
 import { useJobs, useStatus } from "@/lib/client";
 import type { Phase } from "@/lib/jobs";
+import { NETWORK_NAME } from "@/lib/arc";
 
 const FILTERS: { key: string; label: string; phases: Phase[] | null }[] = [
   { key: "all", label: "All", phases: null },
@@ -31,7 +32,7 @@ export default function JobsPage() {
         <div>
           <div className="eyebrow brace">Read live from Arc</div>
           <h1 className="mt-4 text-4xl sm:text-5xl">Jobs</h1>
-          <p className="mt-1 text-dim">Every Accrue job on Arc mainnet, newest first. {data ? `${data.total} in total.` : ""}</p>
+          <p className="mt-1 text-dim">Every Accrue job on {NETWORK_NAME}, newest first. {data ? `${data.total} in total.` : ""}</p>
         </div>
         <ButtonLink href="/post">Post a job</ButtonLink>
       </div>
@@ -56,7 +57,7 @@ export default function JobsPage() {
       </div>
       {data && jobs.length === 0 && (
         <div className="card p-8 text-center text-dim">
-          {data.deployed ? "No jobs match this filter yet." : "The contracts are being deployed to Arc mainnet."}
+          {data.deployed ? "No jobs match this filter yet." : `The contracts are being deployed to ${NETWORK_NAME}.`}
         </div>
       )}
       {!data && !error && <div className="card p-8 text-center text-dim">Reading jobs from Arc…</div>}

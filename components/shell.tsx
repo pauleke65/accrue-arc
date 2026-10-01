@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Fingerprint, LogOut, Wallet, X, Zap } from "lucide-react";
 import { useWallet } from "@/app/wallet";
-import { BRIDGE_URL, CONTRACTS, explorer } from "@/lib/arc";
+import { BRIDGE_URL, CONTRACTS, NETWORK_NAME, chain, explorer } from "@/lib/arc";
 import { formatFee, formatUsdc, shortAddress } from "@/lib/format";
 import { hasRememberedPasskey, passkeysAvailable } from "@/lib/passkey";
 import { AddressLink, Button, CopyButton, TxLink } from "./ui";
@@ -37,7 +37,7 @@ export function Header() {
   return (
     <>
       <div className="bg-amber px-4 py-2 text-center text-sm text-black">
-        <strong className="font-semibold">Accrue is live on Arc mainnet.</strong>{" "}
+        <strong className="font-semibold">Accrue is live on {NETWORK_NAME}.</strong>{" "}
         <Link href="/#demo" className="underline underline-offset-2">
           Run a real job
         </Link>
@@ -172,7 +172,7 @@ function AccountPanel({ onClose }: { onClose: () => void }) {
       {empty && (
         <div className="space-y-2 text-sm">
           <p className="text-dim">
-            To post a job, send USDC to this address on <strong className="text-ink">Arc</strong> (chain 5042). Bridge it from another chain with Circle&apos;s
+            To post a job, send USDC to this address on <strong className="text-ink">{NETWORK_NAME}</strong> (chain {chain.id}). Bridge it from another chain with Circle&apos;s
             CCTP, or withdraw from an exchange that supports Arc.
           </p>
           <div className="flex items-center gap-2 rounded-[6px] border border-line bg-raised px-3 py-2">

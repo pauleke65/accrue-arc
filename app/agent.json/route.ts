@@ -1,4 +1,4 @@
-import { CONTRACTS, ERC8004 } from "@/lib/arc";
+import { CONTRACTS, ERC8004, chain } from "@/lib/arc";
 import { setupState } from "@/lib/server/bootstrap";
 import { json, publicBaseUrl } from "@/lib/server/http";
 import { walletAddresses } from "@/lib/server/wallets";
@@ -22,14 +22,14 @@ export async function GET(request: Request) {
       image: `${base}/icon.svg`,
       services: [
         { name: "web", endpoint: base },
-        { name: "agentWallet", endpoint: engine ? `eip155:5042:${engine}` : null },
-        { name: "erc8183-evaluator", endpoint: `eip155:5042:${CONTRACTS.panel}` },
-        { name: "erc8183-jobs", endpoint: `eip155:5042:${CONTRACTS.jobs}` },
+        { name: "agentWallet", endpoint: engine ? `eip155:${chain.id}:${engine}` : null },
+        { name: "erc8183-evaluator", endpoint: `eip155:${chain.id}:${CONTRACTS.panel}` },
+        { name: "erc8183-jobs", endpoint: `eip155:${chain.id}:${CONTRACTS.jobs}` },
       ],
       x402Support: false,
       active: true,
       registrations: setupState.agentId
-        ? [{ agentId: Number(setupState.agentId), agentRegistry: `eip155:5042:${ERC8004.identity}` }]
+        ? [{ agentId: Number(setupState.agentId), agentRegistry: `eip155:${chain.id}:${ERC8004.identity}` }]
         : [],
       supportedTrust: ["reputation", "validation"],
     },

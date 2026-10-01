@@ -1,4 +1,4 @@
-import { CONTRACTS, ERC8004 } from "@/lib/arc";
+import { CONTRACTS, ERC8004, chain } from "@/lib/arc";
 import { aiConfigured, MODEL } from "@/lib/server/ai";
 import { agentCardUrl, setupState, usdcBalance } from "@/lib/server/bootstrap";
 import { demoAvailability } from "@/lib/server/demo";
@@ -21,7 +21,7 @@ export async function GET() {
     return Object.fromEntries(entries);
   });
   return json({
-    chainId: 5042,
+    chainId: chain.id,
     contracts: { ...CONTRACTS, deployed: setupState.deployed },
     erc8004: { ...ERC8004, agentId: setupState.agentId, agentCard: agentCardUrl() },
     seed: setupState.seed,

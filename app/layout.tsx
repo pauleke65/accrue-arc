@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Footer, Header, SettledToast } from "@/components/shell";
 import { WalletProvider } from "./wallet";
 import "./globals.css";
+import { NETWORK_NAME } from "@/lib/arc";
 
 export const metadata: Metadata = {
   title: "Accrue on Arc · Pay for work when it's proven done",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_URL ?? "http://localhost:3000"),
   openGraph: {
     title: "Accrue on Arc",
-    description: "Pay-on-proof jobs settled in USDC on Arc mainnet.",
+    description: `Pay-on-proof jobs settled in USDC on ${NETWORK_NAME}.`,
     type: "website",
   },
 };

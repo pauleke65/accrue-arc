@@ -5,6 +5,7 @@ import { CheckCircle2, Circle, Loader2, Play, XCircle } from "lucide-react";
 import { formatFee } from "@/lib/format";
 import type { DemoRun, DemoStep } from "@/lib/server/demo";
 import { Button, TxLink } from "./ui";
+import { NETWORK_NAME } from "@/lib/arc";
 
 function StepIcon({ status }: { status: DemoStep["status"] }) {
   if (status === "done") return <CheckCircle2 className="size-5 text-paid" />;
@@ -75,7 +76,7 @@ export function LiveDemo({ compact = false }: { compact?: boolean }) {
       <div className="border-b border-line p-5 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="size-2 rounded-full bg-paid pulse" aria-hidden />
-          <span className="eyebrow text-paid">Live on Arc mainnet</span>
+          <span className="eyebrow text-paid">Live on {NETWORK_NAME}</span>
         </div>
         <h3 className="mt-3 text-2xl">Watch a real job settle</h3>
         {!compact && (

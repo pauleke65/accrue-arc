@@ -119,6 +119,7 @@ ARC_RPC_URL=http://127.0.0.1:8545 npm start   # deploys the contracts itself on 
 | `ANTHROPIC_API_KEY` | Optional. Lets the Proof Engine ask Claude whether evidence meets the brief |
 | `ACCRUE_ENGINE_AGENT_ID` | Optional. The Proof Engine's ERC-8004 id, to skip rediscovery after a restart |
 | `GITHUB_TOKEN` | Optional. Raises GitHub's rate limit for pull-request checks |
+| `NEXT_PUBLIC_ARC_NETWORK` | `testnet` points the app at Arc testnet (chain 5042002) for rehearsals; mainnet otherwise |
 
 ## Status and honesty
 
